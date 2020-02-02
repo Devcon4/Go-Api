@@ -3,7 +3,7 @@ package chatmodule
 import (
 	"net/http"
 
-	"github.com/Devcon4/Go-Api/tools/app"
+	"github.com/Devcon4/Go-Api/tools/framework"
 	"github.com/gorilla/mux"
 )
 
@@ -28,12 +28,12 @@ func (h ChatHandler) Register() {
 func (h ChatHandler) Get(w http.ResponseWriter, r *http.Request) {
 	c, err := h.chatService.Get()
 
-	app.JSONHandler(w, c, err)
+	framework.JSONHandler(w, c, err)
 }
 
 // GetList : GetList handler func
 func (h ChatHandler) GetList(w http.ResponseWriter, r *http.Request) {
 	l, err := h.chatService.GetList()
 
-	app.JSONHandler(w, l, err)
+	framework.JSONHandler(w, l, err)
 }

@@ -3,7 +3,7 @@ package personmodule
 import (
 	"net/http"
 
-	"github.com/Devcon4/Go-Api/tools/app"
+	"github.com/Devcon4/Go-Api/tools/framework"
 	"github.com/gorilla/mux"
 )
 
@@ -27,11 +27,11 @@ func (h PersonHandler) Register() {
 // Get : Get handler func
 func (h PersonHandler) Get(w http.ResponseWriter, r *http.Request) {
 	u, err := h.personService.Get()
-	app.JSONHandler(w, u, err)
+	framework.JSONHandler(w, u, err)
 }
 
 // GetList : GetList handler func
 func (h PersonHandler) GetList(w http.ResponseWriter, r *http.Request) {
 	l, err := h.personService.GetList()
-	app.JSONHandler(w, l, err)
+	framework.JSONHandler(w, l, err)
 }

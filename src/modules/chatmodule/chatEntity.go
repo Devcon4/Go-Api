@@ -1,7 +1,9 @@
 package chatmodule
 
+import "github.com/jinzhu/gorm"
+
 // Chat Entity
 type Chat struct {
-	ID      int    `json:"id"`
+	gorm.Model
 	Message string `json:"message"`
 }

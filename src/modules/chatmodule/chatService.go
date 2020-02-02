@@ -2,33 +2,31 @@ package chatmodule
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 )
 
 // ChatService : Busines logic to fetch chats
 type ChatService struct {
-	db     *sqlx.DB
+	db     *gorm.DB
 	router *mux.Router
 }
 
 // NewChatService : Create a ChatService
-func NewChatService(db *sqlx.DB, router *mux.Router) *ChatService {
+func NewChatService(db *gorm.DB, router *mux.Router) *ChatService {
 	return &ChatService{db, router}
 }
 
 // Get : Returns a Chat
 func (c ChatService) Get() (*Chat, error) {
-
-	return &Chat{
-		2,
-		"Test again!",
-	}, nil
+	chat := Chat{}
+	err := c.db.First(chat).Error
+	return &chat, err
 }
 
 // GetList : Returns a list of Chats
 func (c ChatService) GetList() (*[]Chat, error) {
 	chats := []Chat{}
-	err := c.db.Select(&chats, "select * from chat")
+	err := c.db.Find(&chats).Error
 
 	return &chats, err
 }

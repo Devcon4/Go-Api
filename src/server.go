@@ -10,7 +10,7 @@ import (
 	"github.com/Devcon4/Go-Api/modules/personmodule"
 	"github.com/Devcon4/Go-Api/tools/framework"
 
-	_ "github.com/lib/pq"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func main() {
@@ -19,10 +19,12 @@ func main() {
 		Version: 1,
 	})
 
-	db := framework.NewDBContext(&framework.SQLConfig{
-		DriverName:     "postgres",
-		DataSourceName: "user=dev dbname=Go password=GoDev sslmode=disable",
+	db := framework.NewDBContext(&framework.GORMConfig{
+		DriverName: "postgres",
+		DataSource: "host=localhost user=dev dbname=Go password=GoDev sslmode=disable",
 	})
+
+	db.AutoMigrate(&chatmodule.Chat{}, &personmodule.Person{})
 
 	chatService := chatmodule.NewChatService(db, router)
 	chatHandler := chatmodule.NewChatHandler(router, chatService)
@@ -31,6 +33,8 @@ func main() {
 	personService := personmodule.NewPersonService(db, router)
 	personHandler := personmodule.NewPersonHandler(router, personService)
 	personHandler.Register()
+
+	router.Use(framework.LogRequestMiddleware)
 
 	server := &http.Server{
 		Handler:      router,
@@ -41,4 +45,5 @@ func main() {
 
 	fmt.Println("🚀 Server running on ", server.Addr, "!")
 	log.Fatal(server.ListenAndServe())
+	defer db.Close()
 }

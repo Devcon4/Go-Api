@@ -1,8 +1,10 @@
 package personmodule
 
+import "github.com/jinzhu/gorm"
+
 // Person : Person Entity
 type Person struct {
-	ID        int    `json:"id"`
+	gorm.Model
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 }

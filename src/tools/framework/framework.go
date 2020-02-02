@@ -3,44 +3,52 @@ package framework
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 )
 
-var schema = `
-	CREATE TABLE IF NOT EXISTS chat (
-		id int,
-		message VARCHAR
-	);
-
-	CREATE TABLE IF NOT EXISTS person (
-		id int,
-		firstName VARCHAR,
-		lastName VARCHAR
-	)
-`
-
-// SQLConfig : Configuration object for sql
-type SQLConfig struct {
-	DriverName     string
-	DataSourceName string
+// GORMConfig : Config to create a gorm connection
+type GORMConfig struct {
+	DriverName string
+	DataSource string
 }
 
-// NewDBContext : Creates a db connection
-func NewDBContext(c *SQLConfig) *sqlx.DB {
-	db, err := sqlx.Connect(c.DriverName, c.DataSourceName)
+// NewDBContext : Create a gorm db connection
+func NewDBContext(c *GORMConfig) *gorm.DB {
+	db, err := gorm.Open(c.DriverName, c.DataSource)
 
 	if err != nil {
-		fmt.Println(err.Error())
-		return nil
+		panic("failed to connect database")
 	}
 
-	db.MustExec(schema)
+	// defer db.Close()
 
 	return db
 }
+
+// sqlx setup
+// // SQLConfig : Configuration object for sql
+// type SQLConfig struct {
+// 	DriverName     string
+// 	DataSourceName string
+// }
+
+// // NewDBContext : Creates a db connection
+// func NewDBContext(c *SQLConfig) *sqlx.DB {
+// 	db, err := sqlx.Connect(c.DriverName, c.DataSourceName)
+
+// 	if err != nil {
+// 		fmt.Println(err.Error())
+// 		return nil
+// 	}
+
+// 	db.MustExec(schema)
+
+// 	return db
+// }
 
 // RouterConfig : Config object for the router
 type RouterConfig struct {
@@ -70,4 +78,12 @@ func JSONHandler(w http.ResponseWriter, o interface{}, e error) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(json)
+}
+
+// LogRequestMiddleware : Logs each request
+func LogRequestMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r.RequestURI)
+		next.ServeHTTP(w, r)
+	})
 }
