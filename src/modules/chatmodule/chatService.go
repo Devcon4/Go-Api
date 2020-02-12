@@ -5,7 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// ChatService : Busines logic to fetch chats
+// ChatService : Business logic to fetch chats
 type ChatService struct {
 	db     *gorm.DB
 	router *mux.Router

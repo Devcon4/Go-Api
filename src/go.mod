@@ -7,12 +7,11 @@ require (
 	github.com/daviddengcn/go-colortext v0.0.0-20180409174941-186a3d44e920 // indirect
 	github.com/deckarep/gosx-notifier v0.0.0-20180201035817-e127226297fb // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
-	github.com/google/wire v0.4.0
+	github.com/google/wire v0.4.0 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/jinzhu/gorm v1.9.12
-	github.com/jmoiron/sqlx v1.2.0
+	github.com/jmoiron/sqlx v1.2.0 // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
-	github.com/lib/pq v1.1.1
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-gntp v0.0.0-20200109101910-88aa4ee0ab11 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
