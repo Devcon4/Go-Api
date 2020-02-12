@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+
+  db:
+    image: postgres:11.5
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: GoDev
+      POSTGRES_DB: Go
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - dev_default
+
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 4280:8080
+  #   networks:
+  #     - dev_default
+
+volumes:
+  dbdata:
+
+networks:
+  dev_default:
+
+  #  db:
+#    image: postgres:11.5
+#    environment:
+#      POSTGRES_USER: dev
+#      POSTGRES_PASSWORD: KestrelDev
+#      POSTGRES_DB: kestrel
+#    ports:
+#      - 4281:5432

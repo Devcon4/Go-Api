@@ -2,38 +2,22 @@ version: '3.4'
 
 services:
 
-  db:
-    image: postgres:11.5
+# Custom services.
+
+  chat:
+    build: .
     environment:
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: GoDev
-      POSTGRES_DB: Go
-    volumes:
-      - dbdata:/var/lib/postgresql/data
+      DB_HOST: .
+      DB_PORT: 4261
+      DB_USER: dev
+      DB_DBNAME: chat
+      DB_PASSWORD: FinchDev
     ports:
-      - 5432:5432
+      - 4265:80
     networks:
       - dev_default
 
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 4280:8080
-  #   networks:
-  #     - dev_default
-
-volumes:
-  dbdata:
-
 networks:
   dev_default:
-
-  #  db:
-#    image: postgres:11.5
-#    environment:
-#      POSTGRES_USER: dev
-#      POSTGRES_PASSWORD: KestrelDev
-#      POSTGRES_DB: kestrel
-#    ports:
-#      - 4281:5432
+    driver: overlay
+    attachable: true
