@@ -1,23 +1,43 @@
-version: '3.4'
+version: '3.5'
 
 services:
 
 # Custom services.
+  # db:
+  #   image: postgres:11.5
+  #   environment:
+  #     POSTGRES_USER: dev
+  #     POSTGRES_PASSWORD: FinchDev
+  #     POSTGRES_MULTIPLE_DATABASES: "\"pact-broker\",\"chat\""
+  #   volumes:
+  #     - dbdata:/var/lib/postgresql/data
+  #     - ./scripts/startup:/docker-entrypoint-initdb.d
+  #   ports:
+  #     - 4261:5432
+  #   networks:
+  #     - dev_default
 
   chat:
     build: .
     environment:
-      DB_HOST: .
-      DB_PORT: 4261
+      DB_HOST: db
+      DB_PORT: 5432
       DB_USER: dev
       DB_DBNAME: chat
       DB_PASSWORD: FinchDev
+      SERVICE_HOST: localhost
+      SERVICE_PORT: 80
     ports:
       - 4265:80
     networks:
       - dev_default
 
+# volumes:
+#   dbdata:
+
 networks:
   dev_default:
-    driver: overlay
-    attachable: true
+    # external: true
+    name: finch_dev_default
+
+#192.168.1.10
