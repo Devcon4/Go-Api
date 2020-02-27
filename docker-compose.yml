@@ -25,10 +25,10 @@ services:
       DB_USER: dev
       DB_DBNAME: chat
       DB_PASSWORD: FinchDev
-      SERVICE_HOST: localhost
-      SERVICE_PORT: 80
+      SERVICE_HOST: 0.0.0.0
+      SERVICE_PORT: 8080
     ports:
-      - 4265:80
+      - 4265:8080
     networks:
       - dev_default
 
@@ -37,7 +37,7 @@ services:
 
 networks:
   dev_default:
-    # external: true
+    external: true
     name: finch_dev_default
 
 #192.168.1.10

@@ -25,7 +25,7 @@ func buildDataSource() string {
 
 func buildServerHost() string {
 	host := framework.GetEnvOrDefault("SERVICE_HOST", "localhost")
-	port := framework.GetEnvOrDefault("SERVICE_PORT", "80")
+	port := framework.GetEnvOrDefault("SERVICE_PORT", "8080")
 
 	return fmt.Sprint(host, ":", port)
 }
@@ -36,18 +36,18 @@ func main() {
 		Version: 1,
 	})
 
-	db := framework.NewDBContext(&framework.GORMConfig{
-		DriverName: "postgres",
-		DataSource: buildDataSource(),
-	})
+	// db := framework.NewDBContext(&framework.GORMConfig{
+	// 	DriverName: "postgres",
+	// 	DataSource: buildDataSource(),
+	// })
 
-	db.AutoMigrate(&chatmodule.Chat{}, &personmodule.Person{})
+	// db.AutoMigrate(&chatmodule.Chat{}, &personmodule.Person{})
 
-	chatService := chatmodule.NewChatService(db, router)
+	chatService := chatmodule.NewChatService(nil, router)
 	chatHandler := chatmodule.NewChatHandler(router, chatService)
 	chatHandler.Register()
 
-	personService := personmodule.NewPersonService(db, router)
+	personService := personmodule.NewPersonService(nil, router)
 	personHandler := personmodule.NewPersonHandler(router, personService)
 	personHandler.Register()
 
@@ -62,5 +62,5 @@ func main() {
 
 	fmt.Println("🚀 Server running on ", server.Addr, "!")
 	log.Fatal(server.ListenAndServe())
-	defer db.Close()
+	// defer db.Close()
 }
